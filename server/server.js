@@ -1,52 +1,35 @@
-require('./config/config');
+require('./config/config.js');
 
 const express = require('express')
+const mongoose = require('mongoose');
+
+
 const app = express()
 const bodyParser = require('body-parser')
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // parse application/json
-app.use(bodyParser.json())
+//app.use(bodyParser.json())
+app.use(require('./routes/usuario'));
 
 
-app.get('/usuario', function(req, res) {
-    res.json('get Usuario');
-});
+/*mongoose.connect('mongodb://locahost:27017/cafe', (err, res) => {
 
+    if (err) throw err;
 
+    console.log('Base de datos ONLINE');
 
-app.post('/usuario', function(req, res) {
+});*/
 
-    let body = req.body;
-
-    if (body.nombre === undefined) {
-        res.status(400).json({
-            Ok: false,
-            mensaje: 'El nombre es necesario'
-        });
-    } else {
-        res.json({
-            persona: body
-        });
-        //res.json('post Usuario');
-
-    }
-});
-
-app.put('/usuario/:id', function(req, res) {
-
-    let id = req.params.id;
-
-    res.json({
-        id
-    });
-    //res.json('put Usuario');
-});
-
-app.delete('/usuario', function(req, res) {
-    res.json('delete Usuario');
+mongoose.connect(process.env.URLDB, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true // Se agrega por collection.ensureIndex está depreca
+}, (err, resp) => {
+    if (err) throw err;
+    console.log('Base de datos ONLINE');
 });
 
 app.listen(process.env.PORT, () => {
