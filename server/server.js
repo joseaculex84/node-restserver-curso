@@ -12,7 +12,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // parse application/json
 //app.use(bodyParser.json())
-app.use(require('./routes/usuario'));
+
+//********** COnfiguración Global de Rutas******/
+app.use(require('./routes/index'));
 
 
 /*mongoose.connect('mongodb://locahost:27017/cafe', (err, res) => {
